@@ -234,6 +234,7 @@ class TwoDimRecurrent(MaskedLayer):
         if col_go_backwards == True:
            outputs = outputs[::-1]
            col_states_tensor = col_states_tensor[::-1]
+           retuned_col_states = [col_states_tensor]
         outputs = outputs.dimshuffle((2,1,0,3))
               
         return last_output, outputs, retuned_row_states + retuned_col_states
