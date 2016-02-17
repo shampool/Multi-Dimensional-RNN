@@ -4,7 +4,7 @@ import numpy as np
 import random
 from six.moves import range
 import matplotlib.pyplot as plt
-from local_utils import imshow
+＃from local_utils import imshow
 
 def mysqueeze(a, axis = None):
     if axis == None:
@@ -52,7 +52,7 @@ def showVec(img_vec,gridshape, patchsize):
           startRow, endRow = rowid *patchRow, (rowid+1)*patchRow
           startCol, endCol = colid *patchCol, (colid+1)*patchCol
           img[startRow:endRow,startCol: endCol] = this_patch
-          imshow(img)
+          ＃imshow(img)
           
 def showGrid(grid_vec,gridshape, patchsize):
     patchRow, patchCol = patchsize    
@@ -67,7 +67,7 @@ def showGrid(grid_vec,gridshape, patchsize):
           startRow, endRow = rowid *patchRow, (rowid+1)*patchRow
           startCol, endCol = colid *patchCol, (colid+1)*patchCol
           img[startRow:endRow,startCol: endCol] = this_patch
-          imshow(img)
+          ＃imshow(img)
     #plt.figure()
     #plt.imshow(img)
     #plt.show()
