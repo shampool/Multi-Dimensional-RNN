@@ -6,34 +6,49 @@ from six.moves import range
 import matplotlib.pyplot as plt
 from local_utils import imshow
 
+def mysqueeze(a, axis = None):
+    if axis == None:
+        return np.squeeze(a)
+    if a.shape[axis] != 1:
+        return a
+    else:
+        return np.squeeze(a, axis = axis)
 def getImg_from_Grid(grid_vec, patchsize):
     patchRow, patchCol = patchsize    
     indx =  -1
     #if len(img_vec) == 0:
     #    return None
+    imgchannel = int(grid_vec.shape[-1]//(patchRow*patchCol)) 
     numberofImg = grid_vec.shape[0]
     gridshape = (grid_vec[0,:,:,:].shape[0],grid_vec[0,:,:,:].shape[1])
-    imgs = np.zeros((grid_vec.shape[0], gridshape[0]*patchRow, gridshape[1]*patchCol ))
+    imgs = np.zeros((grid_vec.shape[0], gridshape[0]*patchRow, gridshape[1]*patchCol, imgchannel ))
+    imgs = mysqueeze(imgs, axis = -1)
+    
     for imgidx  in range(numberofImg):   
         for colid in range(gridshape[1]):   
            for rowid in range(gridshape[0]):
               indx = indx + 1
               this_vec =  grid_vec[imgidx,rowid,colid,:]
-              this_patch = np.reshape(this_vec, (patchRow,patchCol))
+              this_patch = np.reshape(this_vec, (patchRow,patchCol,imgchannel ))
+              this_patch = mysqueeze(this_patch,axis = -1)
               startRow, endRow = rowid *patchRow, (rowid+1)*patchRow
               startCol, endCol = colid *patchCol, (colid+1)*patchCol
+              #print this_patch.shape
               imgs[imgidx,startRow:endRow,startCol: endCol] = this_patch
               #imshow(img)
     return imgs
 def showVec(img_vec,gridshape, patchsize):
     patchRow, patchCol = patchsize    
     indx =  -1
-    img = np.zeros((gridshape[0]*patchRow, gridshape[1]*patchCol ))
+    imgchannel = int(img_vec.shape[-1]//(patchRow*patchCol)) 
+    img = np.zeros((gridshape[0]*patchRow, gridshape[1]*patchCol,imgchannel ))
+    img = mysqueeze(img,axis = -1)
     for colid in range(gridshape[1]):   
        for rowid in range(gridshape[0]):
           indx = indx + 1
           this_vec =  img_vec[indx,:]
-          this_patch = np.reshape(this_vec, (patchRow,patchCol))
+          this_patch = np.reshape(this_vec, (patchRow,patchCol,imgchannel))
+          this_patch = mysqueeze(this_patch,axis = -1)
           startRow, endRow = rowid *patchRow, (rowid+1)*patchRow
           startCol, endCol = colid *patchCol, (colid+1)*patchCol
           img[startRow:endRow,startCol: endCol] = this_patch
@@ -41,11 +56,14 @@ def showVec(img_vec,gridshape, patchsize):
           
 def showGrid(grid_vec,gridshape, patchsize):
     patchRow, patchCol = patchsize    
-    img = np.zeros((gridshape[0]*patchRow, gridshape[1]*patchCol ))
+    imgchannel = int(grid_vec.shape[-1]//(patchRow*patchCol)) 
+    img = np.zeros((gridshape[0]*patchRow, gridshape[1]*patchCol ,imgchannel))
+    img = mysqueeze(img,axis = -1)
     for colid in range(gridshape[1]):   
        for rowid in range(gridshape[0]):
           this_vec =  grid_vec[rowid,colid,:]
-          this_patch = np.reshape(this_vec, (patchRow,patchCol))
+          this_patch = np.reshape(this_vec, (patchRow,patchCol,imgchannel ))
+          this_patch = mysqueeze(this_patch,axis = -1)
           startRow, endRow = rowid *patchRow, (rowid+1)*patchRow
           startCol, endCol = colid *patchCol, (colid+1)*patchCol
           img[startRow:endRow,startCol: endCol] = this_patch
