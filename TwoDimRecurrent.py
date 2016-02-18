@@ -128,7 +128,7 @@ class TwoDimRecurrent(MaskedLayer):
         '''
         #column first for all the starting corner, and go_backwards is [row_goback, col_back]
         #assert go_backwards not in ['leftupper','leftlower','rightupper','rightlower'] , "non valid go_backwards"
-        if type(go_backwards) != 'list':
+        if type(go_backwards) is not list:
             go_backwards = [go_backwards]
         if len(go_backwards) == 2:
             [row_go_backwards, col_go_backwards] = go_backwards
@@ -901,7 +901,7 @@ class TwoDimTimeDistributedDense(MaskedLayer):
         '''
         #column first for all the starting corner, and go_backwards is [row_goback, col_back]
         #assert go_backwards not in ['leftupper','leftlower','rightupper','rightlower'] , "non valid go_backwards"
-        if type(go_backwards) != 'list':
+        if type(go_backwards) is not list:
             go_backwards = [go_backwards]
         if len(go_backwards) == 2:
             [row_go_backwards, col_go_backwards] = go_backwards
