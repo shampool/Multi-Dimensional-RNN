@@ -133,7 +133,7 @@ class TwoDimRecurrent(MaskedLayer):
         if len(go_backwards) == 2:
             [row_go_backwards, col_go_backwards] = go_backwards
         else:
-            row_go_backwards = col_go_backwards = go_backwards
+            row_go_backwards = col_go_backwards = go_backwards[0]
             
         grid_shape = (inputs.shape[1], inputs.shape[2])
         if len(initial_states) == 2:
@@ -906,7 +906,7 @@ class TwoDimTimeDistributedDense(MaskedLayer):
         if len(go_backwards) == 2:
             [row_go_backwards, col_go_backwards] = go_backwards
         else:
-            row_go_backwards = col_go_backwards = go_backwards
+            row_go_backwards = col_go_backwards = go_backwards[0]
             
         #grid_shape = (inputs.shape[1], inputs.shape[2])
 
