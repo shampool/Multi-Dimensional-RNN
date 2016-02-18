@@ -356,9 +356,9 @@ class TwoDimRNN(TwoDimRecurrent):
         
         if len(dropout_matrix) != 0:
             if train:
-                x = x*dropout_matrix[0][0]/self.droprate[0]
-                r_state_1 = r_state_1 *dropout_matrix[1][0] /self.droprate[1]
-                c_state_1 = c_state_1 *dropout_matrix[1][1] /self.droprate[1]
+                x = x*dropout_matrix[0][0]/ (1-self.droprate[0])
+                r_state_1 = r_state_1 *dropout_matrix[1][0] / (1-self.droprate[1])
+                c_state_1 = c_state_1 *dropout_matrix[1][1] /(1-self.droprate[1])
                 
         h = K.dot(x , self.W) + self.b
         output = self.activation(h + (K.dot(r_state_1, self.U_row) + K.dot(c_state_1, self.U_col)) )
@@ -494,21 +494,21 @@ class TwoDimGRU(TwoDimRecurrent):
         
         if len(dropout_matrix) != 0:
             if train:
-                x_z = K.dot(x * dropout_matrix[0][0], self.W_z)/self.droprate[0]
-                x_r = K.dot(x * dropout_matrix[0][1], self.W_r) /self.droprate[0]
-                x_h = K.dot(x * dropout_matrix[0][2], self.W_h) /self.droprate[0]
+                x_z = K.dot(x * dropout_matrix[0][0], self.W_z)/ (1-self.droprate[0])
+                x_r = K.dot(x * dropout_matrix[0][1], self.W_r) /(1-self.droprate[0])
+                x_h = K.dot(x * dropout_matrix[0][2], self.W_h) /(1-self.droprate[0])
                 
                 r_hh = (K.dot(r_state_1 * dropout_matrix[1][0], self.U_r_row) \
-                  + K.dot(c_state_1 * dropout_matrix[1][1], self.U_r_col) ) /self.droprate[1]
+                  + K.dot(c_state_1 * dropout_matrix[1][1], self.U_r_col) ) / (1-self.droprate[1])
                   
                 r_row = self.inner_activation(x_r + r_hh + self.b_r_row) 
                 r_col = self.inner_activation(x_r + r_hh + self.b_r_col)
                 
                 z_hh = (K.dot(r_row *r_state_1 * dropout_matrix[1][2], self.U_h_row) \
-                  + K.dot(r_col *c_state_1 * dropout_matrix[1][3], self.U_h_col) ) /self.droprate[1]
+                  + K.dot(r_col *c_state_1 * dropout_matrix[1][3], self.U_h_col) ) / (1-self.droprate[1])
                 
-                z_row_sum = K.dot(r_state_1 * dropout_matrix[1][4], self.U_z_row)/self.droprate[1]
-                z_col_sum = K.dot(c_state_1 * dropout_matrix[1][5], self.U_z_col)/self.droprate[1]
+                z_row_sum = K.dot(r_state_1 * dropout_matrix[1][4], self.U_z_row)/ (1-self.droprate[1])
+                z_col_sum = K.dot(c_state_1 * dropout_matrix[1][5], self.U_z_col)/(1-self.droprate[1])
                 
                 z_row = self.inner_activation(x_z + z_row_sum  + self.b_z_row )
                 z_col = self.inner_activation(x_z +  z_col_sum + self.b_z_col )
@@ -977,7 +977,7 @@ class TwoDimTimeDistributedDense(MaskedLayer):
          train = kwargsdic['train'] 
          if len(dropout_matrix) != 0:
              if train:       
-                x = x *dropout_matrix[0][0] / self.droprate[0]
+                x = x *dropout_matrix[0][0] / (1-self.droprate[0])
         
          output = K.dot(x, self.W) + self.b
          return output        
